@@ -130,3 +130,6 @@ dmypy.json
 
 
 examples/
+*.gdoc
+*.pdf
+.idea/
