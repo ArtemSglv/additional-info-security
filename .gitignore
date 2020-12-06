@@ -133,3 +133,4 @@ examples/
 *.gdoc
 *.pdf
 .idea/
+*.zip
