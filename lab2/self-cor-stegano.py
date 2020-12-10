@@ -10,8 +10,9 @@ import lab2.utils as utils
 def expand_image(img, small_image, fragment_size):
     factor = 2
     # small_image.show()
-    width, height = img.size
+    img_width, img_height = img.size
     px = small_image.load()
+    width, height = small_image.size
 
     img = Image.new('RGB', (width * factor + 2, height * factor + 2), 'Black')
     pixels = img.load()
@@ -28,7 +29,7 @@ def expand_image(img, small_image, fragment_size):
             pixels[factor * i, factor * j + 2] = px[i, j]
             pixels[factor * i + 1, factor * j + 2] = px[i, j]
             pixels[factor * i + 2, factor * j + 2] = px[i, j]
-    img = img.crop((0, 0, width * fragment_size, height * fragment_size))
+    img = img.crop((0, 0, img_width * fragment_size, img_height * fragment_size))
     # img.show()
     # img.save("expand_image.jpg", "JPEG")
     return img
@@ -75,7 +76,7 @@ def steganography_process(img, encrypted_fragment, fragment_size):
 def compose_image(img, dec_fragment, fragment_size):
     image_stream = io.BytesIO(dec_fragment)
     fragment = Image.open(image_stream)
-    # fragment.show()
+    fragment.show()
 
     width, height = img.size
     fragment = expand_image(img, fragment, fragment_size)
@@ -132,7 +133,7 @@ def get_fragment_image(img, fragment_size):
     # берем фрагмент
     fragment_image = image.crop((x_start, y_start, x_stop, y_stop))
     print("fragment img")
-    fragment_image.show()
+    # fragment_image.show()
 
     # Шаг 2: искажение объекта
     draw = ImageDraw.Draw(img)
@@ -147,7 +148,7 @@ def get_fragment_image(img, fragment_size):
     max_size = (fragment_width / 2, fragment_height / 2)
     fragment_image.thumbnail(max_size, Image.ANTIALIAS)
     print("compressed fragment")
-    fragment_image.show()
+    # fragment_image.show()
 
     return fragment_image
 
@@ -156,12 +157,12 @@ if __name__ == '__main__':
     # оригинальное изображение
     image = Image.open("./tiger_original.jpg")
     print("original img")
-    image.show()
+    # image.show()
     # криптографический ключ
     password = "test_pass"
     password2 = "wrong_pass"
 
-    fragment_size = .45
+    fragment_size = .7
 
     compressed_fragment = get_fragment_image(image, fragment_size=fragment_size)
 
